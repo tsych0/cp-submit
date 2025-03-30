@@ -1,0 +1,10 @@
+{
+    "name": "CP Submit",
+    "author": "biswas.ayush03@gmail.com",
+    "homepage_url": "https://github.com/tsych0/cp-submit",
+    "version": "1.0.0",
+    "description": "Codeforces and Atcoder Submit add-on for Competitive Programming Helper.",
+    "icons": {
+        "48": "icon-48.png"
+    }
+}
