@@ -1,13 +1,13 @@
 # ![ICON](icon-48.png) cph-submit
 
 Browser add on that enables Codeforces submit with
-[Competitive Programming Helper](https://github.com/agrawal-d/cph)
+[Competitive Programming Assist](https://github.com/tsych0/cp-assist)
 
 Available for Firefox and Google Chrome.
 
 ## Installation
 
-[Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/cph-submit/)
+[Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/cp-submit/)
 
 [Google Chrome](https://chromewebstore.google.com/detail/cph-submit/ekplnobooikgpdbobcciehbhcmlklgnc)
 
