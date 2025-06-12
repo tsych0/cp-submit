@@ -2,7 +2,8 @@
     "manifest_version": 3,
     "permissions": [
         "scripting",
-        "webNavigation"
+        "webNavigation",
+        "tabs"
     ],
     "host_permissions": [
         "http://localhost/*",

@@ -1,13 +1,16 @@
 {
     "manifest_version": 2,
     "background": {
-        "scripts": ["dist/backgroundScript.js"]
+        "scripts": [
+            "dist/backgroundScript.js"
+        ]
     },
     "permissions": [
         "scripting",
         "*://localhost/*",
         "*://codeforces.com/*",
-        "webNavigation"
+        "webNavigation",
+        "tabs"
     ],
     "browser_specific_settings": {
         "gecko": {
