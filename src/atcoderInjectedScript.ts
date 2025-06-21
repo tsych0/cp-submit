@@ -36,7 +36,10 @@ const handleData = async (data: ContentScriptData) => {
 
     // Get current URL to determine submission endpoint
     const currentUrl = window.location.href;
-    const submitUrl = currentUrl;
+
+    // Extract contest ID from the URL
+    const contestId = currentUrl.split('/')[4];
+    const submitUrl = `https://atcoder.jp/contests/${contestId}/submit`;
 
     try {
         // Make the POST request
@@ -48,9 +51,6 @@ const handleData = async (data: ContentScriptData) => {
 
         if (response.ok) {
             log('Submission successful');
-
-            // Extract contest ID from the URL
-            const contestId = window.location.pathname.split('/')[2];
 
             // Redirect to user's submissions page
             window.location.href = `https://atcoder.jp/contests/${contestId}/submissions/me`;
