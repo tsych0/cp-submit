@@ -20,29 +20,26 @@ export const isAtcoderProblem = (problemUrl: string) => {
     return isPlatform(problemUrl, 'atcoder.jp');
 };
 
+export const isCSESProblem = (problemUrl: string) => {
+  return isPlatform(problemUrl, 'cses.fi');
+}
+
 export const isContestProblem = (problemUrl: string) => {
     return isCodeforcesProblem(problemUrl) && problemUrl.indexOf('contest') !== -1;
 };
 
-export const getSubmitUrl = (problemUrl: string) => {
-    return problemUrl;
+export const getSubmitUrl = (problemUrl: string): string => {
+  log(`problemURL: ${problemUrl}`);
 
-    // if (isAtcoderProblem(problemUrl)) {
-    //     // Extract contest ID from AtCoder URL
-    //     const url = new URL(problemUrl);
-    //     const pathParts = url.pathname.split('/');
-    //     const contestId = pathParts[2];
-    //     return `https://atcoder.jp/contests/${contestId}/submit`;
-    // }
+  if (isCSESProblem(problemUrl)) {
+    const match = problemUrl.match(/cses\.fi\/([^/]+)\/task\/(\d+)/);
+    if (!match) return "";
 
-    // if (!isContestProblem(problemUrl)) {
-    //     return config.cfSubmitPage.href;
-    // }
+    const [, target, task] = match;
+    return `https://cses.fi/${target}/submit/${task}/`;
+  }
 
-    // const url = new URL(problemUrl);
-    // const contestNumber = url.pathname.split('/')[2];
-    // const submitURL = `https://codeforces.com/contest/${contestNumber}/submit`;
-    // return submitURL;
+  return problemUrl;
 };
 
 interface ChromeTab {
@@ -101,6 +98,7 @@ export const handleSubmit = async (
     problemName: string,
     languageId: number,
     sourceCode: string,
+    fileName: string,
     problemUrl: string,
 ) => {
     if (problemName === '' || languageId == -1 || sourceCode == '') {
@@ -110,11 +108,11 @@ export const handleSubmit = async (
 
     log('Platform detection', {
         isCodeforces: isCodeforcesProblem(problemUrl),
-        isAtcoder: isAtcoderProblem(problemUrl)
+        isAtcoder: isAtcoderProblem(problemUrl),
+        isCses: isCSESProblem(problemUrl)
     });
 
     let targetUrl = getSubmitUrl(problemUrl);
-
 
     let tab = await goToTabWithUrl(targetUrl);
 
@@ -124,10 +122,18 @@ export const handleSubmit = async (
         focused: true,
     });
 
-    const scriptToInject = isAtcoderProblem(problemUrl)
-        ? '/dist/atcoderInjectedScript.js'
-        : '/dist/injectedScript.js';
+    let scriptToInject = '';
+    if (isAtcoderProblem(problemUrl)) {
+      scriptToInject = '/dist/atcoderInjectedScript.js';
+    } else if (isCodeforcesProblem(problemUrl)) {
+      scriptToInject = '/dist/cfInjectedScript.js';
+    } else if (isCSESProblem(problemUrl)) {
+      scriptToInject = '/dist/csesInjectedScript.js';
+    }
 
+    if (scriptToInject == '') {
+      return;
+    }
 
     if (typeof browser !== 'undefined') {
         await browser.tabs.executeScript(tab.id, {
@@ -147,6 +153,7 @@ export const handleSubmit = async (
         problemName,
         languageId,
         sourceCode,
+        fileName,
         url: problemUrl,
     });
     log('Sending message to tab with script');
@@ -162,17 +169,6 @@ export const handleSubmit = async (
 
         if (args.tabId === tab.id) {
             log('Our tab is navigating');
-
-            // const url = new URL(args.url);
-            // const searchParams = new URLSearchParams(url.search);
-
-            // if (searchParams.has("friends")) {
-            //   return;
-            // }
-
-            // log("Navigating to friends mode");
-
-            // chrome.tabs.update(args.tabId, { url: args.url + "?friends=on" });
         }
     }, filter);
 };

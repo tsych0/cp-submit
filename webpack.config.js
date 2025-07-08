@@ -3,8 +3,9 @@ const path = require('path');
 module.exports = {
     entry: {
         backgroundScript: './src/backgroundScript.ts',
-        injectedScript: './src/injectedScript.ts',
-        atcoderInjectedScript: './src/atcoderInjectedScript.ts' // New entry point
+        cfInjectedScript: './src/cfInjectedScript.ts',
+        atcoderInjectedScript: './src/atcoderInjectedScript.ts',
+        csesInjectedScript: './src/csesInjectedScript.ts'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),

@@ -7,8 +7,8 @@ export type CphSubmitResponse = {
     problemName: string;
     url: string;
     sourceCode: string;
+    fileName: string;
     languageId: number;
-    platform: 'codeforces' | 'atcoder';
 };
 
 export type ContentScriptData = {

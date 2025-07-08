@@ -27,40 +27,26 @@ const handleData = async (data: ContentScriptData) => {
     // Map Codeforces language ID to AtCoder language ID
     const atcoderLanguageId = mapLanguageId(data.languageId);
 
-    // Create form data for submission
-    const formData = new FormData();
-    formData.append('data.LanguageId', atcoderLanguageId.toString());
-    formData.append('data.TaskScreenName', taskId);
-    formData.append('sourceCode', data.sourceCode);
-    formData.append('csrf_token', csrfToken);
+    // @ts-ignore
+    let toggle_button: HTMLButtonElement = document.querySelector(".btn-toggle-editor");
+    // @ts-ignore
+    let plain_text_area: HTMLTextAreaElement = document.querySelector("#plain-textarea")
 
-    // Get current URL to determine submission endpoint
-    const currentUrl = window.location.href;
-
-    // Extract contest ID from the URL
-    const contestId = currentUrl.split('/')[4];
-    const submitUrl = `https://atcoder.jp/contests/${contestId}/submit`;
-
-    try {
-        // Make the POST request
-        const response = await fetch(submitUrl, {
-            method: 'POST',
-            body: formData,
-            credentials: 'same-origin'
-        });
-
-        if (response.ok) {
-            log('Submission successful');
-
-            // Redirect to user's submissions page
-            window.location.href = `https://atcoder.jp/contests/${contestId}/submissions/me`;
-        } else {
-            log('Submission failed', response.status, response.statusText);
-        }
-    } catch (error) {
-        alert(`Error submitting code ${error}`)
-        log('Error submitting code', error);
+    if (toggle_button?.ariaPressed == 'false') {
+        toggle_button.click()
     }
+
+    setTimeout(() => {
+     for (let i = 0; i < 100; i++) {
+        plain_text_area.value = data.sourceCode;
+     }
+    }, 300);
+
+    setTimeout(() => {
+        toggle_button.click()
+    }, 1500);
+
+    return;
 };
 
 // Map Codeforces language IDs to AtCoder language IDs

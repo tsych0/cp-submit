@@ -8,7 +8,8 @@
     "host_permissions": [
         "http://localhost/*",
         "https://codeforces.com/*",
-        "https://atcoder.jp/*"
+        "https://atcoder.jp/*",
+        "https://cses.fi/*"
     ],
     "background": {
         "service_worker": "dist/backgroundScript.js",
